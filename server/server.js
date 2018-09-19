@@ -8,6 +8,7 @@ const _ = require('lodash');
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+const { authenticate } = require('./middleware/authenticate');
 
 const app = express();
 const port = process.env.PORT;
@@ -102,7 +103,7 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
-app.post('/user', (req, res) => {
+app.post('/users', (req, res) => {
   const body = _.pick(req.body, ['email', 'password']);
   const user = new User(body);
 
@@ -116,6 +117,10 @@ app.post('/user', (req, res) => {
     .catch((err) => {
       res.status(400).send(err);
     });
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(port, () => {
