@@ -102,12 +102,13 @@ describe('POST /users/login', () => {
           return done(err);
         }
 
-        User.findById(users[1]._id).then((user) => { 
-          expect(user.tokens[0]).toHaveProperty('access', 'auth');
-          expect(user.tokens[0]).toHaveProperty('token', res.headers['x-auth']);
-          done();
-        })
-        .catch((err) => done(err));
+        User.findById(users[1]._id)
+          .then((user) => { 
+            expect(user.tokens[1]).toHaveProperty('access', 'auth');
+            expect(user.tokens[1]).toHaveProperty('token', res.headers['x-auth']);
+            done();
+          })
+          .catch((err) => done(err));
       });
 
   });
@@ -128,11 +129,12 @@ describe('POST /users/login', () => {
           return done(err);
         }
 
-        User.findById(users[1]._id).then((user) => { 
-          expect(user.tokens.length).toBe(0);
-          done();
-        })
-        .catch((err) => done(err));
+        User.findById(users[1]._id)
+          .then((user) => { 
+            expect(user.tokens.length).toBe(1);
+            done();
+          })
+          .catch((err) => done(err));
       });
   });
 });
